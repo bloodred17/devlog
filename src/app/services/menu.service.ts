@@ -9,5 +9,19 @@ export class MenuService {
       name: 'projects',
       route: '/projects',
     },
+    {
+      name: 'docs',
+      route: '/docs',
+      subMenu: [
+        {
+          name: 'anti-di',
+          route: '/anti-di'
+        },
+        {
+          name: 'simple-timeout',
+          route: '/simple-timeout'
+        }
+      ]
+    }
   ]
 }
