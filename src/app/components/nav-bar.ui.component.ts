@@ -20,7 +20,7 @@ import {map, tap} from "rxjs";
         </button>
       </div>
       <div class="navbar-start flex">
-        <a class="btn btn-ghost normal-case text-xl"> {{title}} </a>
+        <a class="btn btn-ghost normal-case text-xl" [routerLink]="['/']"> {{title}} </a>
       </div>
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1">

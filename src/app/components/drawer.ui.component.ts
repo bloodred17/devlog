@@ -17,7 +17,7 @@ export type DrawerState = 'open' | 'close';
         <ng-content></ng-content>
       </div>
       <div class="drawer-side">
-        <label for="my-drawer" class="drawer-overlay"></label>
+        <label [for]="drawerName" class="drawer-overlay"></label>
         <ul class="menu p-4 w-80 bg-base-100 text-base-content">
           <!-- Sidebar content here -->
           <li><a routerLink="/projects">Projects</a></li>
