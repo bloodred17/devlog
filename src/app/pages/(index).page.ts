@@ -25,6 +25,7 @@ import {HelloComponent} from "../components/hello.component";
           </div>
         </div>
       </div>
+    </layout-main>
   `,
   styles: [
     `
