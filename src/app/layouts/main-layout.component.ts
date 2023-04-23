@@ -1,14 +1,15 @@
-import {Component, OnDestroy} from "@angular/core";
+import {Component, inject, OnDestroy} from "@angular/core";
 import {DrawerUiComponent} from "../components/drawer.ui.component";
 import {NavBarUiComponent} from "../components/nav-bar.ui.component";
-import {Subject} from "rxjs";
+import {map, Subject} from "rxjs";
+import {ActivatedRoute, RouterModule} from "@angular/router";
 
 @Component({
   selector: 'layout-main',
   standalone: true,
   imports: [
     DrawerUiComponent,
-    NavBarUiComponent
+    NavBarUiComponent,
   ],
   template: `
     <ui-nav-bar title="bloodred17." [fixed]="true" (hamburgerClick)="onHamburgerClick()"></ui-nav-bar>

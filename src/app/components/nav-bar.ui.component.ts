@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, inject, Input, Output} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {MenuService} from "../services/menu.service";
-import {RouterLink} from "@angular/router";
+import {ActivatedRoute, RouterLink, RouterLinkActive} from "@angular/router";
+import {map, tap} from "rxjs";
 
 @Component({
   selector: 'ui-nav-bar',
@@ -24,7 +25,7 @@ import {RouterLink} from "@angular/router";
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1">
           <li *ngFor="let menuItem of menu">
-            <a [routerLink]="menuItem?.route">
+            <a [routerLink]="menuItem?.route" [routerLinkActive]="'bg-primary text-base-100'">
               {{menuItem?.name | titlecase}}
               <svg *ngIf="menuItem?.subMenu" class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
             </a>
@@ -52,6 +53,7 @@ import {RouterLink} from "@angular/router";
   imports: [
     CommonModule,
     RouterLink,
+    RouterLinkActive,
   ],
   styles: [
     `
@@ -70,6 +72,13 @@ export class NavBarUiComponent {
   @Input() fixed: boolean = false;
 
   readonly menu!: any[];
+
+  private readonly route = inject(ActivatedRoute);
+
+  readonly productId$ = this.route.paramMap.pipe(
+    tap(x => console.log(x)),
+    map((params) => params.get('project'))
+  );
 
   constructor(
     private menuService: MenuService,
