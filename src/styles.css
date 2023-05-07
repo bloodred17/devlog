@@ -30,3 +30,41 @@ body::-webkit-scrollbar-thumb
 body {
   overflow-y: auto;
 }
+
+.analog-markdown > * {
+  @apply mt-4
+}
+.analog-markdown > h1 {
+  @apply text-3xl text-gray-900 font-extrabold tracking-tight sm:text-4xl;
+}
+.analog-markdown > h1:before {
+  content: '#';
+  @apply mr-2 text-primary;
+}
+.analog-markdown > h2 {
+  @apply text-2xl text-gray-700 font-bold tracking-tight sm:text-3xl
+}
+.analog-markdown > h2:before {
+  content: '##';
+  @apply mr-2 text-secondary;
+}
+.analog-markdown > h3 {
+  @apply text-xl text-gray-600 font-semibold sm:text-xl
+}
+.analog-markdown > h3::before, .analog-markdown > h3::after {
+  content: '';
+  @apply bg-accent inline-block w-10 h-1 relative top-2;
+}
+.analog-markdown p {
+  @apply text-base leading-7 text-gray-500;
+}
+.analog-markdown ul li::before {
+  content: '->';
+  @apply text-accent mr-2;
+}
+.analog-markdown blockquote {
+  @apply bg-secondary rounded-xl max-w-fit py-2 px-4;
+}
+.analog-markdown blockquote p {
+  @apply text-base-200;
+}
