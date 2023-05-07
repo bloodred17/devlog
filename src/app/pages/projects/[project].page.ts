@@ -12,7 +12,6 @@ import { ActivatedRoute } from '@angular/router';
 import { MainLayoutComponent } from '../../layouts/main-layout.component';
 import { ReplacePipe } from '../../pipes/replace.pipe';
 import { ProjectItem, ProjectService } from '../../services/project.service';
-// import {injectContent, MarkdownComponent} from "@analogjs/content";
 
 @Component({
   selector: 'app-project-details',
@@ -208,12 +207,12 @@ import { ProjectItem, ProjectService } from '../../services/project.service';
               </div>
             </div>
 
-            <!--            <ng-container *ngIf="projectPost$ | async as post">-->
-            <!--&lt;!&ndash;              <analog-markdown [content]="post.content"></analog-markdown>&ndash;&gt;-->
-            <!--              <pre>-->
-            <!--                {{post.content | json}}-->
-            <!--              </pre>-->
-            <!--            </ng-container>-->
+<!--                        <ng-container *ngIf="projectPost$ | async as post">-->
+<!--                          <analog-markdown [content]="content"></analog-markdown>-->
+<!--                          <pre>-->
+<!--                            {{post.content | json}}-->
+<!--                          </pre>-->
+<!--                        </ng-container>-->
           </div>
         </div>
       </div>
@@ -230,6 +229,11 @@ export default class ProjectDetailsPageComponent {
   stackImageMap: any = this.projectService.stackImageMap;
   tagColorMap: any = this.projectService.tagColorMap;
   projectList = this.projectService.projectList;
+  // content: any;
+
+  constructor() {
+
+  }
 
   readonly productId$ = this.route.paramMap
     .pipe(map((params) => params.get('project')))
