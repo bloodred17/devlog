@@ -38,13 +38,14 @@ export interface Content {
 
 export interface ProjectItem {
   date?: Date,
-  title: string,
-  slug?: string,
+  name: string,
+  slug: string,
   description: string,
   stack: Stack[],
   tags: (Tag | string)[],
   indicator?: boolean,
   content?: Content[],
+  createdDate?: Date,
 }
 
 @Injectable({
@@ -64,7 +65,9 @@ export class ProjectService {
 
   readonly projectList: ProjectItem[] = [
     {
-      title: 'project_title',
+      name: 'Project 1',
+      slug: 'project_1',
+      createdDate: new Date(),
       description: 'If a dog chews shoes whose shoes does he choose?',
       stack: [
         Stack.Angular,
@@ -80,7 +83,8 @@ export class ProjectService {
       ]
     },
     {
-      title: 'Project title',
+      name: 'Project 2',
+      slug: 'project_2',
       description: 'If a dog chews shoes whose shoes does he choose?',
       stack: [
         Stack.Svelte,
@@ -91,7 +95,8 @@ export class ProjectService {
       indicator: true,
     },
     {
-      title: 'Project title',
+      name: 'Project 3',
+      slug: 'project_3',
       description: 'If a dog chews shoes whose shoes does he choose?',
       stack: [
         Stack.Svelte,
@@ -101,7 +106,8 @@ export class ProjectService {
       ]
     },
     {
-      title: 'Project title',
+      name: 'Project 4',
+      slug: 'project_4',
       description: 'If a dog chews shoes whose shoes does he choose?',
       stack: [
         Stack.Angular,

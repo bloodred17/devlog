@@ -55,14 +55,14 @@ import {ResponsiveNavBarUiComponent} from "../../components/responsive-nav-bar.u
     <ng-template let-item="projectItem" #itemTemplate>
       <div
         class="card hover:bg-secondary cursor-pointer bg-base-100 shadow-xl indicator transition-all ease-in delay-50"
-        [routerLink]="item?.title"
+        [routerLink]="item?.slug"
       >
         <span
           class="indicator-item badge badge-accent"
           *ngIf="item?.indicator"
         ></span>
         <div class="card-body">
-          <h2 class="card-title">{{ item?.title }}</h2>
+          <h2 class="card-title">{{ item?.name }}</h2>
           <p>{{ item?.description }}</p>
           <div class="flex mt-2">
             <div class="languages w-1/2 flex">
@@ -100,7 +100,7 @@ import {ResponsiveNavBarUiComponent} from "../../components/responsive-nav-bar.u
 })
 export default class ProjectListPageComponent {
   projectService = inject(ProjectService);
-  stackImageMap = this.projectService.stackImageMap;
-  tagColorMap = this.projectService.tagColorMap;
+  stackImageMap: any = this.projectService.stackImageMap;
+  tagColorMap: any = this.projectService.tagColorMap;
   projectList = this.projectService.projectList;
 }

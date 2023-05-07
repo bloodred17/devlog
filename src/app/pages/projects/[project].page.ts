@@ -29,7 +29,6 @@ import { ProjectItem, ProjectService } from '../../services/project.service';
   ],
   template: `
     <layout-main>
-      <!-- This example requires Tailwind CSS v2.0+ -->
       <div class="relative bg-base-200 pt-8 lg:pt-24">
         <div
           class="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:gap-24 lg:items-start"
@@ -89,16 +88,12 @@ import { ProjectItem, ProjectService } from '../../services/project.service';
                 ></div>
                 <div class="relative">
                   <div class="flex">
-                    <p class="text-base-100 text-2xl">Project Name</p>
+                    <p class="text-base-100 text-2xl"> {{item?.name}} </p>
                     <div class="flex-1"></div>
-                    <time class="">Date Time</time>
+                    <time class=""></time>
                   </div>
                   <p class="mt-5 text-base-300">
-                    Sagittis scelerisque nulla cursus in enim consectetur quam.
-                    Dictum urna sed consectetur neque tristique pellentesque.
-                    Blandit amet, sed aenean erat arcu morbi. Cursus faucibus
-                    nunc nisl netus morbi vel porttitor vitae ut. Amet vitae
-                    fames senectus vitae.
+                    {{item?.description}}
                   </p>
                   <div class="flex mt-4 bg-base-300 rounded-2xl p-2">
                     <div class="languages w-1/2 flex">
@@ -231,18 +226,18 @@ export default class ProjectDetailsPageComponent {
 
   projectId!: string;
   item: any;
-  stackImageMap = this.projectService.stackImageMap;
-  tagColorMap = this.projectService.tagColorMap;
+  stackImageMap: any = this.projectService.stackImageMap;
+  tagColorMap: any = this.projectService.tagColorMap;
   projectList = this.projectService.projectList;
 
   readonly productId$ = this.route.paramMap
-    .pipe(map((params) => params.get('projects')))
+    .pipe(map((params) => params.get('project')))
     .subscribe((x) => {
       this.projectId = x as string;
       console.log(this.projectId);
-      // console.log(this.projectList)
+      // console.log(this.projectList);
       if (this.projectId) {
-        this.item = this.projectList.find((x) => x?.title === this.projectId);
+        this.item = this.projectList.find((x) => x?.slug === this.projectId);
         console.log(this.item);
       }
     });
