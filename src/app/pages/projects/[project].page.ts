@@ -7,11 +7,14 @@ import {
   NgOptimizedImage,
   TitleCasePipe,
 } from '@angular/common';
-import { map } from 'rxjs';
+import {from, map, toArray} from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MainLayoutComponent } from '../../layouts/main-layout.component';
 import { ReplacePipe } from '../../pipes/replace.pipe';
-import { ProjectItem, ProjectService } from '../../services/project.service';
+import { ProjectService } from '../../services/project.service';
+import {marked} from "marked";
+import {readFileIfExisting} from "nx/src/utils/fileutils";
+import {readFile} from "fs/promises";
 
 @Component({
   selector: 'app-project-details',
@@ -28,7 +31,7 @@ import { ProjectItem, ProjectService } from '../../services/project.service';
     DatePipe,
   ],
   template: `
-    <layout-main>
+<!--    <layout-main>-->
       <div class="relative bg-base-200 pt-8 lg:pt-24">
         <div
           class="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:gap-24 lg:items-start"
@@ -207,16 +210,15 @@ import { ProjectItem, ProjectService } from '../../services/project.service';
               </div>
             </div>
 
-<!--                        <ng-container *ngIf="projectPost$ | async as post">-->
-<!--                          <analog-markdown [content]="content"></analog-markdown>-->
-<!--                          <pre>-->
-<!--                            {{post.content | json}}-->
-<!--                          </pre>-->
-<!--                        </ng-container>-->
+            <ng-container *ngIf="item">
+              <article class="analog-markdown" [innerHTML]="content">
+              </article>
+            </ng-container>
+            
           </div>
         </div>
       </div>
-    </layout-main>
+<!--    </layout-main>-->
   `,
 })
 export default class ProjectDetailsPageComponent {
@@ -229,21 +231,18 @@ export default class ProjectDetailsPageComponent {
   stackImageMap: any = this.projectService.stackImageMap;
   tagColorMap: any = this.projectService.tagColorMap;
   projectList = this.projectService.projectList;
-  // content: any;
-
-  constructor() {
-
-  }
+  content: any;
 
   readonly productId$ = this.route.paramMap
     .pipe(map((params) => params.get('project')))
-    .subscribe((x) => {
+    .subscribe(async (x) => {
       this.projectId = x as string;
       console.log(this.projectId);
       // console.log(this.projectList);
       if (this.projectId) {
         this.item = this.projectList.find((x) => x?.slug === this.projectId);
         console.log(this.item);
+        this.content = await marked(this.item?.content[0]?.data, { async: true });
       }
     });
 }

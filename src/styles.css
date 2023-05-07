@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 body::-webkit-scrollbar-track
 {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
@@ -63,8 +64,13 @@ body {
   @apply text-accent mr-2;
 }
 .analog-markdown blockquote {
-  @apply bg-secondary rounded-xl max-w-fit py-2 px-4;
+  @apply  border border-secondary border-dashed border-l-4 border-l-primary bg-base-300 rounded-xl max-w-fit py-2 px-4 mt-2;
+  border-left-style: solid;
 }
-.analog-markdown blockquote p {
-  @apply text-base-200;
-}
+/*.analog-markdown pre:has(> code) {*/
+/*  @apply mockup-code;*/
+/*}*/
+/*.analog-markdown pre > code {*/
+/*  @apply px-6;*/
+/*}*/
+
