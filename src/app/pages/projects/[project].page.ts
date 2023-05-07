@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import {
-  AsyncPipe,
+  AsyncPipe, DatePipe,
   JsonPipe,
   NgForOf,
   NgIf,
@@ -26,6 +26,7 @@ import { ProjectItem, ProjectService } from '../../services/project.service';
     NgForOf,
     NgOptimizedImage,
     TitleCasePipe,
+    DatePipe,
   ],
   template: `
     <layout-main>
@@ -90,7 +91,7 @@ import { ProjectItem, ProjectService } from '../../services/project.service';
                   <div class="flex">
                     <p class="text-base-100 text-2xl"> {{item?.name}} </p>
                     <div class="flex-1"></div>
-                    <time class=""></time>
+                    <time class="text-base-100" [dateTime]="item?.createdDate | date:'yyyy-MM-dd hh:mm'"> {{item?.createdDate | date:'mediumDate'}} </time>
                   </div>
                   <p class="mt-5 text-base-300">
                     {{item?.description}}
