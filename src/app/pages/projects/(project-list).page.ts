@@ -26,8 +26,6 @@ import {ResponsiveNavBarUiComponent} from "../../components/responsive-nav-bar.u
     ResponsiveNavBarUiComponent,
   ],
   template: `
-    <!--    <app-hello></app-hello>-->
-<!--    <layout-main>-->
     <ui-nav-bar-responsive></ui-nav-bar-responsive>
 
     <div class="hero h-50 cursor-default">
@@ -70,7 +68,7 @@ import {ResponsiveNavBarUiComponent} from "../../components/responsive-nav-bar.u
             <div class="languages w-1/2 flex">
               <img
                 [ngSrc]="stackImageMap[stackItem].src || ''"
-                alt="Angular"
+                [alt]="stackImageMap[stackItem].alt || ''"
                 width="20"
                 height="20"
                 *ngFor="let stackItem of item?.stack"
@@ -91,7 +89,6 @@ import {ResponsiveNavBarUiComponent} from "../../components/responsive-nav-bar.u
         </div>
       </div>
     </ng-template>
-<!--    </layout-main>-->
   `,
   styles: [
     `
