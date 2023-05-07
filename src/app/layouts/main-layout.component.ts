@@ -3,6 +3,7 @@ import {DrawerUiComponent} from "../components/drawer.ui.component";
 import {NavBarUiComponent} from "../components/nav-bar.ui.component";
 import {map, Subject} from "rxjs";
 import {ActivatedRoute, RouterModule} from "@angular/router";
+import {ResponsiveNavBarUiComponent} from "../components/responsive-nav-bar.ui.component";
 
 @Component({
   selector: 'layout-main',
@@ -10,15 +11,15 @@ import {ActivatedRoute, RouterModule} from "@angular/router";
   imports: [
     DrawerUiComponent,
     NavBarUiComponent,
+    ResponsiveNavBarUiComponent,
   ],
   template: `
-    <ui-nav-bar title="bloodred17." [fixed]="true" (hamburgerClick)="onHamburgerClick()"></ui-nav-bar>
-    <ui-drawer [triggerDrawer]="triggerDrawer" [drawerName]="'main'">
-      <ng-content></ng-content>
-    </ui-drawer>
-<!--    <p>Hello</p>-->
-
-
+<!--    <ui-nav-bar [fixed]="true" (hamburgerClick)="onHamburgerClick()"></ui-nav-bar>-->
+<!--    <ui-drawer [triggerDrawer]="triggerDrawer" [drawerName]="'main'">-->
+<!--      <ng-content></ng-content>-->
+<!--    </ui-drawer>-->
+    <ui-nav-bar-responsive></ui-nav-bar-responsive>
+    <ng-content></ng-content>
   `
 })
 export class MainLayoutComponent implements OnDestroy {

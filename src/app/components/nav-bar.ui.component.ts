@@ -20,7 +20,14 @@ import {map, tap} from "rxjs";
         </button>
       </div>
       <div class="navbar-start flex">
-        <a class="btn btn-ghost normal-case text-xl" [routerLink]="['/']"> {{title}} </a>
+        <a class="btn btn-ghost normal-case text-xl" [routerLink]="['/']" *ngIf="title; else defaultTitle"> {{title}} </a>
+        <ng-template #defaultTitle>
+          <a class="btn btn-ghost normal-case text-xl" [routerLink]="['/']">
+            <span class="">blood</span>
+            <span class="text-accent">Red</span>
+            <span class="">17</span>
+          </a>
+        </ng-template>
       </div>
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1">
@@ -77,7 +84,7 @@ export class NavBarUiComponent {
 
   readonly productId$ = this.route.paramMap.pipe(
     tap(x => console.log(x)),
-    map((params) => params.get('project'))
+    map((params) => params.get('projects'))
   );
 
   constructor(

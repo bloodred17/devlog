@@ -2,3 +2,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar
+{
+  width: 10px;
+  background-color: #F5F5F5;
+}
+
+body::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  background-image: -webkit-gradient(linear,
+  left top,
+  left bottom,
+  color-stop(0.15, hsl(var(--a))),
+  color-stop(0.50, hsl(var(--p))),
+  color-stop(0.85, hsl(var(--a))));
+}
+
+body {
+  overflow-y: auto;
+}

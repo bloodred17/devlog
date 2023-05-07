@@ -17,14 +17,34 @@ export enum Tag {
   Library = 'library',
 }
 
+export enum ContentType {
+  H1 = 'heading-1',
+  H2 = 'heading-2',
+  H3 = 'heading-3',
+  H4 = 'heading-4',
+  Code = 'code',
+  Para = 'para',
+  OL = 'ordered-list',
+  UL = 'unordered-list',
+  Link = 'link',
+  Md = 'markdown',
+  HTML = 'html'
+}
+
+export interface Content {
+  type: ContentType,
+  data: string,
+}
+
 export interface ProjectItem {
-  // date: Date,
+  date?: Date,
   title: string,
   slug?: string,
   description: string,
   stack: Stack[],
   tags: (Tag | string)[],
   indicator?: boolean,
+  content?: Content[],
 }
 
 @Injectable({
@@ -44,13 +64,19 @@ export class ProjectService {
 
   readonly projectList: ProjectItem[] = [
     {
-      title: 'Project title',
+      title: 'project_title',
       description: 'If a dog chews shoes whose shoes does he choose?',
       stack: [
         Stack.Angular,
       ],
       tags: [
         Tag.Server
+      ],
+      content: [
+        {
+          type: ContentType.Md,
+          data: '# Hello'
+        }
       ]
     },
     {
