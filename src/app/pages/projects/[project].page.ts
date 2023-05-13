@@ -112,8 +112,8 @@ marked.use(
                 <p class="mt-5 text-base-300">
                   {{ item?.description }}
                 </p>
-                <div class="flex mt-4 bg-base-300 rounded-2xl p-2">
-                  <div class="languages w-1/2 flex">
+                <div class="flex mt-4 gap-4">
+                  <div class="languages w-1/2 flex bg-base-300 rounded-2xl p-2 gap-2">
                     <img
                       [ngSrc]="stackImageMap[stackItem].src || ''"
                       [alt]="stackImageMap[stackItem].alt || ''"
@@ -122,7 +122,7 @@ marked.use(
                       *ngFor="let stackItem of item?.stack"
                     />
                   </div>
-                  <div class="tags w-1/2 flex justify-end">
+                  <div class="tags w-1/2 flex justify-end bg-base-300 rounded-2xl p-2 gap-2">
                     <span
                       [class]="
                         tagColorMap[tag] ||

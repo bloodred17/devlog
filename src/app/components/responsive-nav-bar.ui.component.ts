@@ -54,7 +54,7 @@ import {MenuService} from "../services/menu.service";
               {{menuItem?.name | titlecase}}
               <svg *ngIf="menuItem?.subMenu" class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
             </a>
-            <ul class="menu bg-base-100 w-56 p-2 rounded-box" *ngIf="menuItem?.subMenu">
+            <ul class="menu bg-base-100 w-56 p-2 rounded-box border-primary border-4" *ngIf="menuItem?.subMenu">
               <li *ngFor="let subMenuItem of menuItem?.subMenu">
                 <a class="hover:bg-secondary" [routerLink]="subMenuItem?.route">{{subMenuItem?.name}}</a>
               </li>
