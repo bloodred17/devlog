@@ -1,12 +1,20 @@
-import {Component, inject, ViewEncapsulation} from '@angular/core';
-import {AsyncPipe, DatePipe, JsonPipe, NgForOf, NgIf, NgOptimizedImage, TitleCasePipe,} from '@angular/common';
-import {map} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
-import {MainLayoutComponent} from '../../layouts/main-layout.component';
-import {ReplacePipe} from '../../pipes/replace.pipe';
-import {ProjectService} from '../../services/project.service';
-import {marked} from 'marked';
-import {ResponsiveNavBarUiComponent} from "../../components/responsive-nav-bar.ui.component";
+import { Component, inject, ViewEncapsulation } from '@angular/core';
+import {
+  AsyncPipe,
+  DatePipe,
+  JsonPipe,
+  NgForOf,
+  NgIf,
+  NgOptimizedImage,
+  TitleCasePipe,
+} from '@angular/common';
+import { map } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { MainLayoutComponent } from '../../layouts/main-layout.component';
+import { ReplacePipe } from '../../pipes/replace.pipe';
+import { ProjectService } from '../../services/project.service';
+import { marked } from 'marked';
+import { ResponsiveNavBarUiComponent } from '../../components/responsive-nav-bar.ui.component';
 import { mangle } from 'marked-mangle';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
@@ -19,9 +27,8 @@ marked.use(
       const language = hljs.getLanguage(lang) ? lang : 'plaintext';
       return hljs.highlight(code, { language }).value;
     },
-  }),
+  })
 );
-
 
 @Component({
   selector: 'app-project-details',
@@ -113,7 +120,9 @@ marked.use(
                   {{ item?.description }}
                 </p>
                 <div class="flex mt-4 gap-4">
-                  <div class="languages w-1/2 flex bg-base-300 rounded-2xl p-2 gap-2">
+                  <div
+                    class="languages w-fit flex bg-base-300 rounded-2xl p-2 gap-2"
+                  >
                     <img
                       [ngSrc]="stackImageMap[stackItem].src || ''"
                       [alt]="stackImageMap[stackItem].alt || ''"
@@ -122,7 +131,10 @@ marked.use(
                       *ngFor="let stackItem of item?.stack"
                     />
                   </div>
-                  <div class="tags w-1/2 flex justify-end bg-base-300 rounded-2xl p-2 gap-2">
+                  <div class="flex-1"></div>
+                  <div
+                    class="tags w-fit flex justify-end bg-base-300 rounded-2xl p-2 gap-2"
+                  >
                     <span
                       [class]="
                         tagColorMap[tag] ||
@@ -230,18 +242,18 @@ marked.use(
 
           <article class="analog-markdown">
             <h1 id="hello-world">Hello World</h1>
-            <pre><code class="hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"hello world"</span>)\n</code></pre>
+            <pre><code class="hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"hello world"</span>)
+</code></pre>
             <h2 id="abc">abc</h2>
-            <pre><code class="hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"hello world"</span>)\n</code></pre>
+            <pre><code class="hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"hello world"</span>)
+</code></pre>
           </article>
         </div>
       </div>
     </div>
     <!--    </layout-main>-->
   `,
-  styleUrls: [
-    './project.page.scss'
-  ],
+  styleUrls: ['./project.page.scss'],
   // encapsulation: ViewEncapsulation.None,
 })
 export default class ProjectDetailsPageComponent {
