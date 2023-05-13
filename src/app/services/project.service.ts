@@ -94,8 +94,8 @@ Some example content
 continue quote
 >>  more quote
 
-\`\`\`ts
-console.log('Hello world')
+\`\`\`javascript
+console.log('Pokemon')
 \`\`\`
 
           `

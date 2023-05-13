@@ -1,0 +1,172 @@
+/* Tailwind directives  */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar
+{
+  width: 10px;
+  background-color: #F5F5F5;
+}
+
+body::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  background-image: -webkit-gradient(linear,
+  left top,
+  left bottom,
+  color-stop(0.15, hsl(var(--a))),
+  color-stop(0.50, hsl(var(--p))),
+  color-stop(0.85, hsl(var(--a))));
+}
+
+body {
+  overflow-y: auto;
+}
+
+.analog-markdown {
+  & > * {
+    @apply mt-4
+  }
+
+  & > h1 {
+    @apply text-3xl text-gray-900 font-extrabold tracking-tight sm:text-4xl;
+  }
+
+  & > h1:before {
+    content: '#';
+    @apply mr-2 text-primary;
+  }
+
+  & > h2 {
+    @apply text-2xl text-gray-700 font-bold tracking-tight sm:text-3xl
+  }
+
+  & > h2:before {
+    content: '##';
+    @apply mr-2 text-secondary;
+  }
+
+  & > h3 {
+    @apply text-xl text-gray-600 font-semibold sm:text-xl
+  }
+
+  & > h3::before, & > h3::after {
+    content: '';
+    @apply bg-accent inline-block w-10 h-1 relative top-2;
+  }
+
+  p {
+    @apply text-base leading-7 text-gray-500;
+  }
+
+  ul li::before {
+    content: '->';
+    @apply text-accent mr-2;
+  }
+
+  blockquote {
+    @apply  border border-secondary border-dashed border-l-4 border-l-primary bg-base-300 rounded-xl max-w-fit py-2 px-4 mt-2;
+    border-left-style: solid;
+  }
+
+  pre {
+    code.hljs {
+      @apply p-4 rounded-xl;
+      display: block;
+      overflow-x: auto;
+      text-shadow: none;
+
+      background: #1a1b26;
+      color: #9aa5ce;
+
+      .hljs-comment,
+      .hljs-meta {
+        color: #565f89;
+      }
+      .hljs-deletion,
+      .hljs-doctag,
+      .hljs-regexp,
+      .hljs-selector-attr,
+      .hljs-selector-class,
+      .hljs-selector-id,
+      .hljs-selector-pseudo,
+      .hljs-tag,
+      .hljs-template-tag,
+      .hljs-variable.language_ {
+        color: #f7768e;
+      }
+      .hljs-link,
+      .hljs-literal,
+      .hljs-number,
+      .hljs-params,
+      .hljs-template-variable,
+      .hljs-type,
+      .hljs-variable {
+        color: #ff9e64;
+      }
+      .hljs-attribute,
+      .hljs-built_in {
+        color: #e0af68;
+      }
+      .hljs-keyword,
+      .hljs-property,
+      .hljs-subst,
+      .hljs-title,
+      .hljs-title.class_,
+      .hljs-title.class_.inherited__,
+      .hljs-title.function_ {
+        color: #7dcfff;
+      }
+      .hljs-selector-tag {
+        color: #73daca;
+      }
+      .hljs-addition,
+      .hljs-bullet,
+      .hljs-quote,
+      .hljs-string,
+      .hljs-symbol {
+        color: #9ece6a;
+      }
+      .hljs-code,
+      .hljs-formula,
+      .hljs-section {
+        color: #7aa2f7;
+      }
+      .hljs-attr,
+      .hljs-char.escape_,
+      .hljs-keyword,
+      .hljs-name,
+      .hljs-operator {
+        color: #bb9af7;
+      }
+      .hljs-punctuation {
+        color: #c0caf5;
+      }
+      .hljs-emphasis {
+        font-style: italic;
+      }
+      .hljs-strong {
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+
+
+/*.analog-markdown pre:has(> code) {*/
+/*  @apply mockup-code;*/
+/*}*/
+/*.analog-markdown pre > code {*/
+/*  @apply px-6;*/
+/*}*/
+

@@ -1,20 +1,27 @@
-import { Component, inject } from '@angular/core';
-import {
-  AsyncPipe, DatePipe,
-  JsonPipe,
-  NgForOf,
-  NgIf,
-  NgOptimizedImage,
-  TitleCasePipe,
-} from '@angular/common';
-import {from, map, toArray} from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { MainLayoutComponent } from '../../layouts/main-layout.component';
-import { ReplacePipe } from '../../pipes/replace.pipe';
-import { ProjectService } from '../../services/project.service';
-import {marked} from "marked";
-import {readFileIfExisting} from "nx/src/utils/fileutils";
-import {readFile} from "fs/promises";
+import {Component, inject, ViewEncapsulation} from '@angular/core';
+import {AsyncPipe, DatePipe, JsonPipe, NgForOf, NgIf, NgOptimizedImage, TitleCasePipe,} from '@angular/common';
+import {map} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
+import {MainLayoutComponent} from '../../layouts/main-layout.component';
+import {ReplacePipe} from '../../pipes/replace.pipe';
+import {ProjectService} from '../../services/project.service';
+import {marked} from 'marked';
+import {ResponsiveNavBarUiComponent} from "../../components/responsive-nav-bar.ui.component";
+import { mangle } from 'marked-mangle';
+import { markedHighlight } from 'marked-highlight';
+import hljs from 'highlight.js';
+
+marked.use(mangle());
+marked.use(
+  markedHighlight({
+    langPrefix: 'hljs language-',
+    highlight(code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+      return hljs.highlight(code, { language }).value;
+    },
+  }),
+);
+
 
 @Component({
   selector: 'app-project-details',
@@ -29,197 +36,213 @@ import {readFile} from "fs/promises";
     NgOptimizedImage,
     TitleCasePipe,
     DatePipe,
+    ResponsiveNavBarUiComponent,
   ],
   template: `
-<!--    <layout-main>-->
-      <div class="relative bg-base-200 pt-8 lg:pt-24">
-        <div
-          class="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:gap-24 lg:items-start"
-        >
-          <div class="relative sm:py-16 lg:py-0">
+    <!--    <layout-main>-->
+    <ui-nav-bar-responsive></ui-nav-bar-responsive>
+    <div class="relative bg-base-200 pt-8 lg:pt-24">
+      <div
+        class="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:gap-24 lg:items-start"
+      >
+        <div class="relative sm:py-16 lg:py-0">
+          <div
+            aria-hidden="true"
+            class="hidden sm:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-screen"
+          >
             <div
-              aria-hidden="true"
-              class="hidden sm:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-screen"
+              class="absolute inset-y-0 right-1/2 w-full bg-secondary rounded-r-3xl lg:right-72"
+            ></div>
+            <svg
+              class="absolute top-8 left-1/2 -ml-3 lg:-right-8 lg:left-auto lg:top-12"
+              width="404"
+              height="392"
+              fill="none"
+              viewBox="0 0 404 392"
             >
-              <div
-                class="absolute inset-y-0 right-1/2 w-full bg-secondary rounded-r-3xl lg:right-72"
-              ></div>
-              <svg
-                class="absolute top-8 left-1/2 -ml-3 lg:-right-8 lg:left-auto lg:top-12"
-                width="404"
-                height="392"
-                fill="none"
-                viewBox="0 0 404 392"
-              >
-                <defs>
-                  <pattern
-                    id="02f20b47-fd69-4224-a62a-4c9de5c763f7"
+              <defs>
+                <pattern
+                  id="02f20b47-fd69-4224-a62a-4c9de5c763f7"
+                  x="0"
+                  y="0"
+                  width="20"
+                  height="20"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <rect
                     x="0"
                     y="0"
-                    width="20"
-                    height="20"
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <rect
-                      x="0"
-                      y="0"
-                      width="4"
-                      height="4"
-                      class="fill-accent"
-                      fill="currentColor"
-                    />
-                  </pattern>
-                </defs>
-                <rect
-                  width="404"
-                  height="392"
-                  fill="url(#02f20b47-fd69-4224-a62a-4c9de5c763f7)"
-                />
-              </svg>
-            </div>
+                    width="4"
+                    height="4"
+                    class="fill-accent"
+                    fill="currentColor"
+                  />
+                </pattern>
+              </defs>
+              <rect
+                width="404"
+                height="392"
+                fill="url(#02f20b47-fd69-4224-a62a-4c9de5c763f7)"
+              />
+            </svg>
+          </div>
 
-            <div
-              class="relative mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-0 lg:max-w-none lg:py-20"
-            >
-              <!-- Testimonial card-->
-              <div class="relative p-6 rounded-2xl shadow-xl overflow-hidden">
-                <!--                <img class="absolute inset-0 h-full w-full object-cover" [src]="'/images/wireframe-image.jpg'" alt="">-->
-                <!--                <div class="absolute inset-0 bg-primary mix-blend-multiply"></div>-->
-                <!--                <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary opacity-90"></div>-->
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-primary to-primary"
-                ></div>
-                <div class="relative">
-                  <div class="flex">
-                    <p class="text-base-100 text-2xl"> {{item?.name}} </p>
-                    <div class="flex-1"></div>
-                    <time class="text-base-100" [dateTime]="item?.createdDate | date:'yyyy-MM-dd hh:mm'"> {{item?.createdDate | date:'mediumDate'}} </time>
+          <div
+            class="relative mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-0 lg:max-w-none lg:py-20"
+          >
+            <!-- Testimonial card-->
+            <div class="relative p-6 rounded-2xl shadow-xl overflow-hidden">
+              <!--                <img class="absolute inset-0 h-full w-full object-cover" [src]="'/images/wireframe-image.jpg'" alt="">-->
+              <!--                <div class="absolute inset-0 bg-primary mix-blend-multiply"></div>-->
+              <!--                <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary opacity-90"></div>-->
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-primary to-primary"
+              ></div>
+              <div class="relative">
+                <div class="flex">
+                  <p class="text-base-100 text-2xl">{{ item?.name }}</p>
+                  <div class="flex-1"></div>
+                  <time
+                    class="text-base-100"
+                    [dateTime]="item?.createdDate | date : 'yyyy-MM-dd hh:mm'"
+                  >
+                    {{ item?.createdDate | date : 'mediumDate' }}
+                  </time>
+                </div>
+                <p class="mt-5 text-base-300">
+                  {{ item?.description }}
+                </p>
+                <div class="flex mt-4 bg-base-300 rounded-2xl p-2">
+                  <div class="languages w-1/2 flex">
+                    <img
+                      [ngSrc]="stackImageMap[stackItem].src || ''"
+                      [alt]="stackImageMap[stackItem].alt || ''"
+                      width="20"
+                      height="20"
+                      *ngFor="let stackItem of item?.stack"
+                    />
                   </div>
-                  <p class="mt-5 text-base-300">
-                    {{item?.description}}
-                  </p>
-                  <div class="flex mt-4 bg-base-300 rounded-2xl p-2">
-                    <div class="languages w-1/2 flex">
-                      <img
-                        [ngSrc]="stackImageMap[stackItem].src || ''"
-                        [alt]="stackImageMap[stackItem].alt || ''"
-                        width="20"
-                        height="20"
-                        *ngFor="let stackItem of item?.stack"
-                      />
-                    </div>
-                    <div class="tags w-1/2 flex justify-end">
-                      <span
-                        [class]="
-                          tagColorMap[tag] ||
-                          'badge bg-primary-500 border-primary-500'
-                        "
-                        *ngFor="let tag of item?.tags"
-                      >
-                        {{ tag | titlecase }}
-                      </span>
-                    </div>
+                  <div class="tags w-1/2 flex justify-end">
+                    <span
+                      [class]="
+                        tagColorMap[tag] ||
+                        'badge bg-primary-500 border-primary-500'
+                      "
+                      *ngFor="let tag of item?.tags"
+                    >
+                      {{ tag | titlecase }}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div
-            class="relative mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-0"
-          >
-            <!-- Content area -->
-            <div class="pt-12 sm:pt-16 lg:pt-20">
-              <h2
-                class="text-3xl text-gray-900 font-extrabold tracking-tight sm:text-4xl"
-              >
-                On a mission to empower teams
-              </h2>
-              <div class="mt-6 text-gray-500 space-y-6">
-                <p class="text-lg">
-                  Sagittis scelerisque nulla cursus in enim consectetur quam.
-                  Dictum urna sed consectetur neque tristique pellentesque.
-                  Blandit amet, sed aenean erat arcu morbi. Cursus faucibus nunc
-                  nisl netus morbi vel porttitor vitae ut. Amet vitae fames
-                  senectus vitae.
-                </p>
-                <p class="text-base leading-7">
-                  Sollicitudin tristique eros erat odio sed vitae, consequat
-                  turpis elementum. Lorem nibh vel, eget pretium arcu vitae.
-                  Eros eu viverra donec ut volutpat donec laoreet quam urna.
-                  Sollicitudin tristique eros erat odio sed vitae, consequat
-                  turpis elementum. Lorem nibh vel, eget pretium arcu vitae.
-                  Eros eu viverra donec ut volutpat donec laoreet quam urna.
-                </p>
-                <p class="text-base leading-7">
-                  Rhoncus nisl, libero egestas diam fermentum dui. At quis
-                  tincidunt vel ultricies. Vulputate aliquet velit faucibus
-                  semper. Pellentesque in venenatis vestibulum consectetur nibh
-                  id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi
-                  enim fermentum lacus in. Viverra.
-                </p>
-                <p class="text-base leading-7">
-                  Rhoncus nisl, libero egestas diam fermentum dui. At quis
-                  tincidunt vel ultricies. Vulputate aliquet velit faucibus
-                  semper. Pellentesque in venenatis vestibulum consectetur nibh
-                  id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi
-                  enim fermentum lacus in. Viverra.
-                </p>
-                <p class="text-base leading-7">
-                  Rhoncus nisl, libero egestas diam fermentum dui. At quis
-                  tincidunt vel ultricies. Vulputate aliquet velit faucibus
-                  semper. Pellentesque in venenatis vestibulum consectetur nibh
-                  id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi
-                  enim fermentum lacus in. Viverra.
-                </p>
-                <p class="text-base leading-7">
-                  Rhoncus nisl, libero egestas diam fermentum dui. At quis
-                  tincidunt vel ultricies. Vulputate aliquet velit faucibus
-                  semper. Pellentesque in venenatis vestibulum consectetur nibh
-                  id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi
-                  enim fermentum lacus in. Viverra.
-                </p>
-                <p class="text-base leading-7">
-                  Rhoncus nisl, libero egestas diam fermentum dui. At quis
-                  tincidunt vel ultricies. Vulputate aliquet velit faucibus
-                  semper. Pellentesque in venenatis vestibulum consectetur nibh
-                  id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi
-                  enim fermentum lacus in. Viverra.
-                </p>
-                <p class="text-base leading-7">
-                  Rhoncus nisl, libero egestas diam fermentum dui. At quis
-                  tincidunt vel ultricies. Vulputate aliquet velit faucibus
-                  semper. Pellentesque in venenatis vestibulum consectetur nibh
-                  id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi
-                  enim fermentum lacus in. Viverra.
-                </p>
-                <p class="text-base leading-7">
-                  Rhoncus nisl, libero egestas diam fermentum dui. At quis
-                  tincidunt vel ultricies. Vulputate aliquet velit faucibus
-                  semper. Pellentesque in venenatis vestibulum consectetur nibh
-                  id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi
-                  enim fermentum lacus in. Viverra.
-                </p>
-                <p class="text-base leading-7">
-                  Rhoncus nisl, libero egestas diam fermentum dui. At quis
-                  tincidunt vel ultricies. Vulputate aliquet velit faucibus
-                  semper. Pellentesque in venenatis vestibulum consectetur nibh
-                  id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi
-                  enim fermentum lacus in. Viverra.
-                </p>
-              </div>
+        <div
+          class="relative mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-0"
+        >
+          <!-- Content area -->
+          <div class="pt-12 sm:pt-16 lg:pt-20">
+            <h2
+              class="text-3xl text-gray-900 font-extrabold tracking-tight sm:text-4xl"
+            >
+              On a mission to empower teams
+            </h2>
+            <div class="mt-6 text-gray-500 space-y-6">
+              <p class="text-lg">
+                Sagittis scelerisque nulla cursus in enim consectetur quam.
+                Dictum urna sed consectetur neque tristique pellentesque.
+                Blandit amet, sed aenean erat arcu morbi. Cursus faucibus nunc
+                nisl netus morbi vel porttitor vitae ut. Amet vitae fames
+                senectus vitae.
+              </p>
+              <p class="text-base leading-7">
+                Sollicitudin tristique eros erat odio sed vitae, consequat
+                turpis elementum. Lorem nibh vel, eget pretium arcu vitae. Eros
+                eu viverra donec ut volutpat donec laoreet quam urna.
+                Sollicitudin tristique eros erat odio sed vitae, consequat
+                turpis elementum. Lorem nibh vel, eget pretium arcu vitae. Eros
+                eu viverra donec ut volutpat donec laoreet quam urna.
+              </p>
+              <p class="text-base leading-7">
+                Rhoncus nisl, libero egestas diam fermentum dui. At quis
+                tincidunt vel ultricies. Vulputate aliquet velit faucibus
+                semper. Pellentesque in venenatis vestibulum consectetur nibh
+                id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi enim
+                fermentum lacus in. Viverra.
+              </p>
+              <p class="text-base leading-7">
+                Rhoncus nisl, libero egestas diam fermentum dui. At quis
+                tincidunt vel ultricies. Vulputate aliquet velit faucibus
+                semper. Pellentesque in venenatis vestibulum consectetur nibh
+                id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi enim
+                fermentum lacus in. Viverra.
+              </p>
+              <p class="text-base leading-7">
+                Rhoncus nisl, libero egestas diam fermentum dui. At quis
+                tincidunt vel ultricies. Vulputate aliquet velit faucibus
+                semper. Pellentesque in venenatis vestibulum consectetur nibh
+                id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi enim
+                fermentum lacus in. Viverra.
+              </p>
+              <p class="text-base leading-7">
+                Rhoncus nisl, libero egestas diam fermentum dui. At quis
+                tincidunt vel ultricies. Vulputate aliquet velit faucibus
+                semper. Pellentesque in venenatis vestibulum consectetur nibh
+                id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi enim
+                fermentum lacus in. Viverra.
+              </p>
+              <p class="text-base leading-7">
+                Rhoncus nisl, libero egestas diam fermentum dui. At quis
+                tincidunt vel ultricies. Vulputate aliquet velit faucibus
+                semper. Pellentesque in venenatis vestibulum consectetur nibh
+                id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi enim
+                fermentum lacus in. Viverra.
+              </p>
+              <p class="text-base leading-7">
+                Rhoncus nisl, libero egestas diam fermentum dui. At quis
+                tincidunt vel ultricies. Vulputate aliquet velit faucibus
+                semper. Pellentesque in venenatis vestibulum consectetur nibh
+                id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi enim
+                fermentum lacus in. Viverra.
+              </p>
+              <p class="text-base leading-7">
+                Rhoncus nisl, libero egestas diam fermentum dui. At quis
+                tincidunt vel ultricies. Vulputate aliquet velit faucibus
+                semper. Pellentesque in venenatis vestibulum consectetur nibh
+                id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi enim
+                fermentum lacus in. Viverra.
+              </p>
+              <p class="text-base leading-7">
+                Rhoncus nisl, libero egestas diam fermentum dui. At quis
+                tincidunt vel ultricies. Vulputate aliquet velit faucibus
+                semper. Pellentesque in venenatis vestibulum consectetur nibh
+                id. In id ut tempus egestas. Enim sit aliquam nec, a. Morbi enim
+                fermentum lacus in. Viverra.
+              </p>
             </div>
-
-            <ng-container *ngIf="item">
-              <article class="analog-markdown" [innerHTML]="content">
-              </article>
-            </ng-container>
-            
           </div>
+
+          <ng-container *ngIf="item">
+            <article class="analog-markdown" [innerHTML]="content"></article>
+          </ng-container>
+
+          <article class="analog-markdown">
+            <h1 id="hello-world">Hello World</h1>
+            <pre><code class="hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"hello world"</span>)\n</code></pre>
+            <h2 id="abc">abc</h2>
+            <pre><code class="hljs language-javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"hello world"</span>)\n</code></pre>
+          </article>
         </div>
       </div>
-<!--    </layout-main>-->
+    </div>
+    <!--    </layout-main>-->
   `,
+  styleUrls: [
+    './project.page.scss'
+  ],
+  // encapsulation: ViewEncapsulation.None,
 })
 export default class ProjectDetailsPageComponent {
   private readonly route = inject(ActivatedRoute);
@@ -233,6 +256,8 @@ export default class ProjectDetailsPageComponent {
   projectList = this.projectService.projectList;
   content: any;
 
+  constructor() {}
+
   readonly productId$ = this.route.paramMap
     .pipe(map((params) => params.get('project')))
     .subscribe(async (x) => {
@@ -242,7 +267,39 @@ export default class ProjectDetailsPageComponent {
       if (this.projectId) {
         this.item = this.projectList.find((x) => x?.slug === this.projectId);
         console.log(this.item);
-        this.content = await marked(this.item?.content[0]?.data, { async: true });
+        this.content = await marked(this.item?.content[0]?.data, {
+          async: true,
+        });
       }
     });
+
+  async md() {
+    // marked.setOptions({
+    //   highlight: function(code, lang) {
+    //       console.log(code, lang)
+    //     if (prism.languages[lang]) {
+    //       return prism.highlight(code, prism.languages[lang], lang);
+    //     } else {
+    //       return code;
+    //     }
+    //   }
+    // });
+    // loadLanguages()
+    // const extension: MarkedExtension = {
+    //   highlight(code: string, lang: string, callback?: (error: any, code?: string) => void): string | void {
+    //     console.log(prism.languages[lang]);
+    //     if (prism.languages[lang]) {
+    //       return prism.highlight(code, prism.languages[lang], lang);
+    //     } else {
+    //       return code;
+    //     }
+    //   }
+    // }
+    // marked.use(extension);
+    //
+    // let someMarkdown = "```javascript\nlet x = 2;```";
+    //
+    // let html = await marked(someMarkdown, {async: true})
+    // console.log(html)
+  }
 }
