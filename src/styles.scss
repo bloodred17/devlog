@@ -66,11 +66,26 @@ body {
 
   p {
     @apply text-base leading-7 text-gray-500;
+
+    code {
+      @apply bg-primary p-1 text-base-100 rounded;
+    }
   }
 
-  ul li::before {
-    content: '->';
-    @apply text-accent mr-2;
+  ul {
+    li::before {
+      content: '->';
+      @apply text-accent mr-2;
+    }
+
+    ul {
+      @apply px-4;
+
+      li::before {
+        content: '|->';
+        @apply text-accent mr-2;
+      }
+    }
   }
 
   blockquote {
